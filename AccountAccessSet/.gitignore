@@ -1,0 +1,5 @@
+ds/
+__pycache__
+.vscode/
+.env
+*.log
