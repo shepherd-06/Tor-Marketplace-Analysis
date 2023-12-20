@@ -20,8 +20,6 @@ class DataVisualizer:
         return country.name if country else code
 
     def process_data_to_get_top(self, info_list):
-        # Example processing function to count the occurrences of each country
-        # and return the top 10. This should be adjusted based on actual data structure.
         country_counts = {}
         for info in info_list:
             countries = info['location'] if isinstance(
@@ -104,38 +102,30 @@ class DataVisualizer:
         plt.tight_layout(rect=[0, 0.03, 1, 0.95])
         plt.show()
 
-    def price_variation_by_location(self, currency, 
-                                    country, 
+    def price_variation_by_location(self, currency,
+                                    country,
                                     additional_title=None):
         df = pd.DataFrame(self.data)
 
         # Filter out entries without the specified currency or with 'Unknown' values
         df = df[(df['currency'] == currency) & (df['price'] != 'Unknown')]
 
-        # Count the original number of data points
         original_data_count = len(df)
 
-        # Apply the average price calculation for list prices
         df['price'] = df['price'].apply(self._average_price)
 
-        # Explode location lists into separate rows and duplicate the price for each exploded location
         df = df.explode('location')
 
-        # Filter the DataFrame for the specified country
         country_data = df[df['location'] == country]
 
-        # Count the filtered data points
         filtered_data_count = len(country_data)
 
-        # Generate a color palette
         palette = sns.color_palette("Spectral", filtered_data_count)
 
-        # Create a line plot for the price points by the specified location
         plt.figure(figsize=(14, 8))
         sns.lineplot(data=country_data, x=country_data.index,
                      y='price', palette=palette)
 
-        # Set the titles for the graph
         if additional_title:
             plt.suptitle(additional_title, fontsize=16, fontweight='bold')
 
@@ -152,58 +142,44 @@ class DataVisualizer:
         plt.show()
 
     def pie_stat(self, data_dict: dict):
-        # Total number of data files
         total_data_points = 33896
 
-        # Calculate the number of unparsed data points
         unparsed_data_points = total_data_points - data_dict['Total']
 
-        # Add 'Unparsed' category if there are any unparsed data points
         if unparsed_data_points > 0:
             data_dict['Unparsed'] = unparsed_data_points
 
-        # Remove the 'Total' key as it is no longer needed
         del data_dict['Total']
 
-        # Data to plot
         labels = data_dict.keys()
         sizes = data_dict.values()
 
-        # Color palette
         colors = sns.color_palette('YlOrBr', len(labels))
 
-        # Plot
         plt.figure(figsize=(8, 8))
         plt.pie(sizes, labels=labels, colors=colors,
                 autopct='%1.1f%%', startangle=140)
-        # Equal aspect ratio ensures that pie is drawn as a circle.
         plt.axis('equal')
         plt.title('Distribution of Categories', pad=20, fontsize=16)
         plt.show()
 
     def plot_top_10_in_categories(self, personal_info: list, bank_info: list, email_info: list):
-        # Process the data to get the top 10 for each category
         top_personal = self.process_data_to_get_top(personal_info)
         top_bank = self.process_data_to_get_top(bank_info)
         top_email = self.process_data_to_get_top(email_info)
 
-        # Create a unique countries set from top 10 of each category
         unique_countries = set(top_personal.head(10)['Country']) | set(
             top_bank.head(10)['Country']) | set(top_email.head(10)['Country'])
 
-        # Assign a color to each unique country
         palette = sns.color_palette("bright", len(unique_countries))
         country_color_map = {country: palette[i]
                              for i, country in enumerate(unique_countries)}
 
-        # Function to assign colors based on country
         def assign_colors(df):
             return [country_color_map[country] for country in df['Country']]
 
-        # Create a figure with three subplots
         fig, axes = plt.subplots(1, 3, figsize=(21, 7), sharey=True)
 
-        # Plot each category in a subplot with assigned colors
         sns.barplot(ax=axes[0], x='Count', y='Country',
                     data=top_personal, palette=assign_colors(top_personal))
         sns.barplot(ax=axes[1], x='Count', y='Country',
@@ -211,16 +187,13 @@ class DataVisualizer:
         sns.barplot(ax=axes[2], x='Count', y='Country',
                     data=top_email, palette=assign_colors(top_email))
 
-        # Titles for each subplot
         axes[0].set_title('Top 10 Personal Information')
         axes[1].set_title('Top 10 Financial Information')
         axes[2].set_title('Top 10 Online Account Information')
 
-        # General title
         plt.suptitle('Top 10 Popular Countries in Each Category',
                      fontsize=16, fontweight='bold')
 
-        # Creating custom legend for countries with both Alpha-2 and Full name
         legend_handles = [plt.Rectangle(
             (0, 0), 1, 1, color=country_color_map[country]) for country in unique_countries]
         legend_labels = [f"{country}, {self._country_full_name(
@@ -229,6 +202,5 @@ class DataVisualizer:
         plt.legend(legend_handles, legend_labels, title="Countries",
                    loc='center left', bbox_to_anchor=(1, 0.5))
 
-        # Show plot with tight layout
         plt.tight_layout(rect=[0, 0.03, 0.9, 0.95])
         plt.show()

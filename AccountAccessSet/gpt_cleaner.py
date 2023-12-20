@@ -87,8 +87,3 @@ def parse(json_string):
         error_traceback = traceback.format_exc()
         print("Error while Parsing JSON frm OpenAI:", error_traceback)
         logging.error("Error while Parsing JSON frm OpenAI:", error_traceback)
-
-
-# Example usage
-# analyze_text_with_openai(
-#     "this is an example usage of this file. if everything works correctly, reply hello world.")

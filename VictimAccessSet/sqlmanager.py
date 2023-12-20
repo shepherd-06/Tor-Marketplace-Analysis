@@ -58,15 +58,3 @@ class SQLManager:
         self.cursor.execute("SELECT os FROM data")
         rows = self.cursor.fetchall()
         return [row[0] for row in rows]
-
-
-if __name__ == "__main__":
-    # Usage example
-    db_manager = SQLManager('my_database.db')
-    db_manager.create_table()
-    # Example data insertion
-    db_manager.insert_data('example.com,example2.com', 2, 'IT', 100,
-                           '2020-07-06', '2020-07-06', 'Windows 10 Home', 10.00,
-                           'file1.json')
-    # Remember to close the connection when done
-    db_manager.close()
