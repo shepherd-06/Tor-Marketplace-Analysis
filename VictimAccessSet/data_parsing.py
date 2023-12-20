@@ -4,7 +4,7 @@ from sqlmanager import SQLManager
 import logging
 
 
-class Analyzer:
+class DataParser:
 
     def __init__(self) -> None:
         self.db_manager = SQLManager()
@@ -81,4 +81,4 @@ class Analyzer:
 
 
 if __name__ == "__main__":
-    Analyzer().main()
+    DataParser().main()
