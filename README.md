@@ -41,9 +41,6 @@ Contributions to enhance the projects are welcome. Please open an issue first to
 ## PDF Reports
 - Detailed reports on the findings and analyses of each project are available in PDF format in the [project base directory](https://github.com/shepherd-06/Tor-Marketplace-Analysis/blob/main/Final%20Report.pdf). 
 
-## Acknowledgements
-This suite is a collaborative effort by researchers, developers, and cybersecurity enthusiasts. Special thanks to all contributors and the cybersecurity community.
-
 ## Disclaimer
 All projects in this suite are for educational and research purposes only. The data is handled within the confines of ethical and legal standards.
 
